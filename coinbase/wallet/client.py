@@ -176,7 +176,11 @@ class Client(object):
         return self._request('delete', *args, **kwargs)
 
     def _make_api_object(self, response, model_type=None):
-        blob = response.json()
+        try:
+            blob = response.json()
+        except:
+            blob = json.loads(response.content)
+            
         data = blob.get('data', None)
         # All valid responses have a "data" key.
         if data is None:
